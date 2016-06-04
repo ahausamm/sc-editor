@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"fmt"
 )
 
 func AuthenticateRequest() gin.HandlerFunc {
@@ -18,10 +19,11 @@ func AuthenticateRequest() gin.HandlerFunc {
 			session.Save()
 		}
 		if !lib.IsSecureStringValid(session.Get("secure_string")) {
-			c.HTML(http.StatusUnauthorized, "403.tmpl", gin.H{"status": "unauthorized"})
+			c.AbortWithStatus(http.StatusUnauthorized);
 		}
 	}
 }
+
 
 var router *gin.Engine
 
@@ -53,6 +55,8 @@ func InitAPI() {
 		v1.PUT("/users/:id", users.UpdateUser)
 		v1.DELETE("/users/:id", users.DeleteUser)
 	}
+
+	Run()
 	return
 
 }
@@ -61,8 +65,11 @@ func Run() {
 	router.Run(":8080")
 }
 
-func Init() {
-
-	management.GetConfig()
-	InitAPI()
+func Init(userId string) {
+	if(management.InitManagement(userId)){
+		fmt.Println("ready to use")
+		InitAPI()
+	} else {
+		fmt.Println("Error: Management unauthorized")
+	}
 }

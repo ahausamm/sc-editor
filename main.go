@@ -3,12 +3,16 @@ package main
 import (
 	"./application/backend"
 	"fmt"
+	"flag"
 )
 
 func main() {
+	userId := flag.String("userId", "", "a string with the userId")
+	flag.Parse()
 
-	api.Init()
-
-	fmt.Println("run")
-	api.Run()
+	if(*userId != "") {
+		api.Init(*userId)
+	} else {
+		fmt.Println("Error: please add a userId")
+	}
 }
