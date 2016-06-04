@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?{{ .hash }}">
+		<script src="/static/js/lib/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$(".clickme").on("click",function(e){
+					$.ajax({
+					  dataType: "json",
+					  url: "/api/v1/users",
+					}).done(function(response,status,xhr) {
+					  alert(response.length)
+					});
+				})
+			});
+		</script>
+	</head>
+	<body>
+	    <h1>
+	        Grüezi ({{ .secure_string }})
+	    </h1>
+	    <button class="clickme">Click me!</button>
+	</body>
+</html>
