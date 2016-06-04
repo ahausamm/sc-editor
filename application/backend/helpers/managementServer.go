@@ -6,6 +6,7 @@ import (
 type conf struct {
 	typ string
 }
+var m *mgmt
 
 type mgmt struct {
 	userId string
@@ -26,6 +27,7 @@ func (m *mgmt) authorize() bool {
 }
 
 func createAuthorizationKey() string {
+
 	return "authorizationString"
 }
 
