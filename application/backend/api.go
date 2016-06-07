@@ -65,8 +65,8 @@ func Run() {
 	router.Run(":8080")
 }
 
-func Init(userId string) {
-	if(management.InitManagement(userId,"1234")){
+func Init(UserId string, InstanceId string, ServiceUrl string, ApiVersion string) {
+	if(management.InitManagement(UserId,InstanceId,ServiceUrl,ApiVersion)){
 		fmt.Println("ready to use")
 		management.ManagementRequest();
 		InitAPI()
