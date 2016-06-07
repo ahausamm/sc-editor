@@ -9,7 +9,7 @@ import (
 	"net"
 )
 
-func GetIp() string {
+func GetLocalIp() string {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
 		return ""

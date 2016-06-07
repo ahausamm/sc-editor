@@ -2,47 +2,62 @@ package management
 
 import (
 	"fmt"
+	"time"
 )
+
 type conf struct {
 	typ string
 }
-var m *mgmt
+
+type authorization struct {
+	token string
+	authorized bool
+	expires time.Time
+}
 
 type mgmt struct {
 	userId string
+	instanceId string
 	clientIp string
 	creationTimestamp string
 	serviceUrl string
-	authorized bool
+	authorization authorization
 	config conf
 }
 
+var m *mgmt
+
 func (m *mgmt) IsAuthorized() bool {
-    return m.authorized
-}
-func (m *mgmt) authorize() bool {
-    //Request machen
-    m.authorized = true;
-    return m.IsAuthorized()
-}
-
-func createAuthorizationKey() string {
-
-	return "authorizationString"
+	if(time.Since(m.authorization.expires).Seconds() < 0 && m.authorization.authorized) {
+    	return true
+    } else {
+    	return false
+    }
 }
 
-func InitManagement(userId string) bool {
+func (m *mgmt) createAuthorization() authorization {
+	// Hier mit ManagementBackend verbinden und ein Token einfordern
+	returner := authorization{
+		authorized: true,
+		token: "Jdlsdfj9458lsdfj",
+		expires: time.Now().AddDate(0,0,2),
+	}
+	return returner
+}
+
+func ManagementRequest() {
+	fmt.Println("request")
+}
+func InitManagement(userId string, instanceId string) bool {
 	m := mgmt{
 		userId: userId,
-		clientIp: GetIp(),
-		creationTimestamp: "dd",
+		instanceId: instanceId,
+		clientIp: GetLocalIp(),
 		serviceUrl: "http://hand.sg.werk.ch",
-		authorized: false,
+		authorization: m.createAuthorization(),
 		config: conf{
 			typ: "json",
 		},
 	}
-	fmt.Println(m.clientIp)
-	m.authorize()
 	return m.IsAuthorized()
 }

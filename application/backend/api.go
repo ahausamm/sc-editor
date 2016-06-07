@@ -66,8 +66,9 @@ func Run() {
 }
 
 func Init(userId string) {
-	if(management.InitManagement(userId)){
+	if(management.InitManagement(userId,"1234")){
 		fmt.Println("ready to use")
+		management.ManagementRequest();
 		InitAPI()
 	} else {
 		fmt.Println("Error: Management unauthorized")
